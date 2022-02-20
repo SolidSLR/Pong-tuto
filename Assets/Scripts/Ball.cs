@@ -15,6 +15,8 @@ public class Ball : MonoBehaviour
     [SerializeField] private Text leftCount;
     [SerializeField] private Text rightCount;
 
+    [SerializeField] private Text score;
+
     AudioSource audioSource;
 
     [SerializeField] private AudioClip audioGoal, audioBracket, audioBounce;
@@ -28,6 +30,10 @@ public class Ball : MonoBehaviour
         rightCount.text = rightGoals.ToString();
 
         audioSource = GetComponent<AudioSource>();
+
+        score.enabled = false;
+
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame
@@ -100,7 +106,7 @@ public class Ball : MonoBehaviour
 
         speed = 30;
 
-        if(direction == "Left"){
+        /*if(direction == "Left"){
 
             leftGoals++;
 
@@ -116,10 +122,46 @@ public class Ball : MonoBehaviour
 
             GetComponent<Rigidbody2D>().velocity = Vector2.right *speed;
 
+        }*/
+
+        if(!CheckWinner()){
+
+            leftGoals++;
+
+            leftCount.text = leftGoals.ToString();
+
+            GetComponent<Rigidbody2D>().velocity = Vector2.left *speed;
+            
         }
 
         audioSource.clip = audioGoal;
 
         audioSource.Play();
     }    
+
+    private bool CheckWinner(){
+        if(leftGoals == 5){
+
+            score.text = "O xogador esquerdo GAÑOU!\nPulsa I para volver ó Inicio\nPulsa P para volver a xogar";
+
+            score.enabled = true;
+
+            Time.timeScale = 0;
+
+            return true;
+
+        } else if(rightGoals == 5){
+
+            score.text = "O xogador dereito GAÑOU!\nPulsa I para volver ó Inicio\nPulsa P para volver a xogar";
+
+            score.enabled = true;
+
+            Time.timeScale = 0;
+
+            return true;
+
+        } else {
+            return false;
+        }
+    }
 }
