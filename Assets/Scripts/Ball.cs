@@ -6,16 +6,27 @@ public class Ball : MonoBehaviour
 {
 
     [SerializeField] private float speed = 30.0f;
+
+    
+    [SerializeField] private int leftGoals = 0;
+    [SerializeField] private int rightGoals = 0;
+
+    [SerializeField] private string leftCount;
+    [SerializeField] private string rightCount;
     // Start is called before the first frame update
     void Start()
     {
-        
+        GetComponent<Rigidbody2D>().velocity = Vector2.right * speed;
+
+        leftCount = leftGoals.ToString();
+
+        rightCount = rightGoals.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
-        GetComponent<Rigidbody2D>().velocity = Vector2.right * speed;
+        
     }
 
     private void OnCollisionEnter2D(Collision2D colision){
@@ -60,4 +71,9 @@ public class Ball : MonoBehaviour
         
         }
     }
+
+    private void resetBallPos(string direction){
+        
+        transform.position = Vector2.zero;
+    }    
 }
