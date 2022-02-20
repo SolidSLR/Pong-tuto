@@ -33,7 +33,7 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        speed = speed +2 * Time.deltaTime;
     }
 
     private void OnCollisionEnter2D(Collision2D colision){
