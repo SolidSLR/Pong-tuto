@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ball : MonoBehaviour
 {
@@ -11,16 +12,22 @@ public class Ball : MonoBehaviour
     [SerializeField] private int leftGoals = 0;
     [SerializeField] private int rightGoals = 0;
 
-    [SerializeField] private string leftCount;
-    [SerializeField] private string rightCount;
+    [SerializeField] private Text leftCount;
+    [SerializeField] private Text rightCount;
+
+    AudioSource audioSource;
+
+    [SerializeField] private AudioClip audioGoal, audioBracket, audioBounce;
     // Start is called before the first frame update
     void Start()
     {
         GetComponent<Rigidbody2D>().velocity = Vector2.right * speed;
 
-        leftCount = leftGoals.ToString();
+        leftCount.text= leftGoals.ToString();
 
-        rightCount = rightGoals.ToString();
+        rightCount.text = rightGoals.ToString();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -40,6 +47,10 @@ public class Ball : MonoBehaviour
             Vector2 direction = new Vector2(x, y);
 
             GetComponent<Rigidbody2D>().velocity = direction * speed;
+
+            audioSource.clip = audioBracket;
+
+            audioSource.Play();
         }
 
         if(colision.gameObject.name == "RightBracket"){
@@ -51,6 +62,17 @@ public class Ball : MonoBehaviour
             Vector2 direction = new Vector2(x, y);
 
             GetComponent<Rigidbody2D>().velocity = direction * speed;
+
+            audioSource.clip = audioBracket;
+
+            audioSource.Play();
+        }
+
+        if(colision.gameObject.name == "Top" || colision.gameObject.name == "Bot"){
+
+            audioSource.clip = audioBounce;
+
+            audioSource.Play();
         }
 
     }
@@ -72,8 +94,32 @@ public class Ball : MonoBehaviour
         }
     }
 
-    private void resetBallPos(string direction){
-        
+    public void resetBallPos(string direction){
+
         transform.position = Vector2.zero;
+
+        speed = 30;
+
+        if(direction == "Left"){
+
+            leftGoals++;
+
+            leftCount.text = leftGoals.ToString();
+
+            GetComponent<Rigidbody2D>().velocity = Vector2.left *speed;
+
+        }else if(direction == "Right"){
+
+            rightGoals++;
+
+            rightCount.text = leftGoals.ToString();
+
+            GetComponent<Rigidbody2D>().velocity = Vector2.right *speed;
+
+        }
+
+        audioSource.clip = audioGoal;
+
+        audioSource.Play();
     }    
 }
