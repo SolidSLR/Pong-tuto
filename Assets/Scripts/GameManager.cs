@@ -18,7 +18,12 @@ public class GameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.P) || Input.GetMouseButton(0)){
 
             SceneManager.LoadScene("Game");
+
+        }
+
+        if(Input.GetKeyDown(KeyCode.I)){
             
+            SceneManager.LoadScene("Start");
         }
     }
 }

@@ -18,7 +18,10 @@ public class Ball : MonoBehaviour
     [SerializeField] private Text score;
 
     AudioSource audioSource;
+    
+    [SerializeField] private Text timer;
 
+    private float time = 180;
     [SerializeField] private AudioClip audioGoal, audioBracket, audioBounce;
     // Start is called before the first frame update
     void Start()
@@ -40,6 +43,33 @@ public class Ball : MonoBehaviour
     void Update()
     {
         speed = speed +2 * Time.deltaTime;
+
+         if(time>=0){
+
+            time -= Time.deltaTime;
+
+            timer.text = formatTime(time);
+        } else {
+
+            timer.text = "00:00";
+
+            if(leftGoals > rightGoals){
+                
+                score.text = "O xogador esquerdo GAÑOU!\nPulsa I para volver ó Inicio\nPulsa P para volver a xogar";
+
+            } else if(rightGoals > leftGoals){
+
+                score.text = "O xogador dereito GAÑOU!\nPulsa I para volver ó Inicio\nPulsa P para volver a xogar";
+
+            } else {
+
+                score.text = "EMPATE!\nPulsa I para volver ó Inicio\nPulsa P para volver a xogar";
+            }
+
+            score.enabled = true;
+
+            Time.timeScale = 0;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D colision){
@@ -131,7 +161,7 @@ public class Ball : MonoBehaviour
             leftCount.text = leftGoals.ToString();
 
             GetComponent<Rigidbody2D>().velocity = Vector2.left *speed;
-            
+
         }
 
         audioSource.clip = audioGoal;
@@ -163,5 +193,14 @@ public class Ball : MonoBehaviour
         } else {
             return false;
         }
+    }
+
+    private string formatTime(float time){
+        
+        string minutes = Mathf.Floor(time / 60).ToString("00");
+
+        string seconds = Mathf.Floor(time % 60).ToString("00");
+
+        return minutes + ":" + seconds;
     }
 }
